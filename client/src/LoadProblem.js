@@ -23,7 +23,7 @@ const LoadProblem = () => {
     const fetchProblem = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:8000/problems/get-problem`,
+          `${process.env.REACT_APP_BACKEND_URL}/problems/get-problem`,
           { params: { id: problemId } }
         );
         console.log(data);
