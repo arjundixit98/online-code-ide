@@ -11,7 +11,7 @@ function ViewProblems() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:8000/problems/get-problems"
+          `${process.env.REACT_APP_BACKEND_URL}/problems/get-problems`
         );
         setProblemList(data);
         setLoading(false);
