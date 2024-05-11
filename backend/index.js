@@ -1,6 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const PORT = 8000;
+const PORT = process.env.PORT;
 const app = express();
 const mongoose = require("mongoose");
 const MONGOURI = "mongodb://127.0.0.1:27017/online-compiler";
