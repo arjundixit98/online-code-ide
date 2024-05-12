@@ -1,8 +1,6 @@
+require("dotenv").config();
 const Queue = require("bull");
-const jobQueue = new Queue(
-  "job-queue",
-  "redis://red-cp0i9g021fec7385dva0:6379"
-);
+const jobQueue = new Queue("job-queue", process.env.REDIS_CONNECTION_STRING);
 const Job = require("./models/job");
 const { executeCode } = require("./executeCode");
 const NUM_WORKERS = 5;
