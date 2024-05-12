@@ -1,10 +1,14 @@
 const Queue = require("bull");
-const jobQueue = new Queue("job-queue");
+const jobQueue = new Queue(
+  "job-queue",
+  "redis://red-cp0i9g021fec7385dva0:6379"
+);
 const Job = require("./models/job");
 const { executeCode } = require("./executeCode");
 const NUM_WORKERS = 5;
 
 jobQueue.process(NUM_WORKERS, async ({ data }) => {
+  console.log("queue is processing");
   const { id: jobId, isTestCase } = data;
   const job = await Job.findById(jobId);
   if (job === undefined) {
