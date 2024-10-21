@@ -168,6 +168,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/logout", async (req, res) => {
+  try {
+    res.cookie("token", "", { expires: new Date(0) });
+    // console.log(res.cookie?.token);
+    return res
+      .status(200)
+      .json({ status: "success", message: "Logged out successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ status: "error", message: "Unable to logout" });
+  }
+});
+
 app.post("/run", async (req, res) => {
   const { language, code, problemId } = req.body;
   let isTestCase = true;

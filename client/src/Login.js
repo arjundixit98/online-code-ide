@@ -1,9 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "./AuthContext";
 
 function Login() {
+  const { login, isLoggedIn } = useContext(AuthContext);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("");
@@ -11,20 +14,24 @@ function Login() {
   const navigate = useNavigate();
 
   //Check if the user is already logged in
-  const checkIfLoggedIn = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/auth/verify", {
-        withCredentials: true,
-      });
-      if (response.data.status === "success") {
-        console.log("User authenticated", response.data.username);
-        navigate("/editor");
-      }
-    } catch (error) {
-      console.error("Error occured", error.response?.data?.message);
-    }
-  };
-  useEffect(() => checkIfLoggedIn, [navigate]);
+  // const checkIfLoggedIn = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:8000/auth/verify", {
+  //       withCredentials: true,
+  //     });
+  //     if (response.data.status === "success") {
+  //       console.log("User authenticated", response.data.username);
+  //       navigate("/editor");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error occured", error.response?.data?.message);
+  //   }
+  // };
+  // useEffect(() => checkIfLoggedIn, [navigate]);
+
+  useEffect(() => {
+    if (isLoggedIn) navigate("/editor");
+  });
 
   const onLoginClicked = async (e) => {
     e.preventDefault();
@@ -42,7 +49,7 @@ function Login() {
       const { message, status } = response.data;
       setStatus(status);
       setMessage(message);
-
+      login();
       navigate("/editor");
     } catch (error) {
       if (error.response) {

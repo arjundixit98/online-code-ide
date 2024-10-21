@@ -2,16 +2,22 @@ import { jwtDecode } from "jwt-decode";
 
 export const checkAuthStatus = () => {
   try {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token"))
-      .split("=")[1];
+    // Get the token from cookies
+    const tokenRow = document.cookie
+      ?.split("; ")
+      .find((row) => row.startsWith("token="));
 
-    const decoded = jwtDecode(token);
-    return true;
-    //console.log(decoded);
+    if (!tokenRow) {
+      throw new Error("Token not found in cookies");
+    }
+
+    const token = tokenRow.split("=")[1];
+    const decoded = jwtDecode(token); // Decode the token
+
+    console.log("Decoded token:", decoded);
+    return true; // Token is valid
   } catch (error) {
-    console.error("Error decoding token :", error);
-    return false;
+    console.error("Error decoding token:", error.message);
+    return false; // Token is invalid or not present
   }
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import AddProblem from "./AddProblem";
 import ViewProblems from "./ViewProblems";
@@ -7,8 +7,16 @@ import "./stylesheets/home.css";
 import DefaultEditor from "./DefaultEditor";
 import SignUp from "./Signup";
 import Login from "./Login";
+import LogOut from "./LogOut";
+import { AuthContext } from "./AuthContext";
 
 function Home() {
+  const { isLoggedIn } = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   console.log(isLoggedIn);
+  // });
+
   return (
     <Router>
       <div className="nav-bar">
@@ -21,6 +29,11 @@ function Home() {
         <Link className="nav-links" to={"/add-problem"}>
           Add Problem
         </Link>
+        {isLoggedIn && (
+          <Link className="nav-links" to={"/logout"}>
+            LogOut
+          </Link>
+        )}
       </div>
 
       <Routes>
@@ -30,6 +43,7 @@ function Home() {
         <Route path="/view-problem-set" element={<ViewProblems />} />
         <Route path="/load-problem/:id" element={<LoadProblem />} />
         <Route path="/add-problem" element={<AddProblem />} />
+        <Route path="/logout" element={<LogOut />} />
       </Routes>
     </Router>
   );
