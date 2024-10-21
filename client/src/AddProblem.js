@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./stylesheets/addproblem.css";
+import { useNavigate } from "react-router-dom";
+import { checkAuthStatus } from "./service/auth";
 function AddProblem() {
   const [problemName, setProblemName] = useState("");
   const [problemDescription, setProblemDescription] = useState("");
   const [testCasesCount, setTestCasesCount] = useState("");
   const [testCaseInput, setTestCaseInput] = useState("");
   const [testCaseExpectedOutput, setTestCaseExpectedOutput] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!checkAuthStatus()) {
+      //redirect to login page
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleSubmit = async () => {
     const payload = {

@@ -63,6 +63,7 @@ function App() {
       const {
         data: { jobId },
       } = await axios.post("http://localhost:8000/run", payload);
+      console.log(payload);
       setJobID(jobId);
 
       let intervalId;
@@ -73,6 +74,7 @@ function App() {
         );
 
         const { job, success, error } = dataRes;
+        console.log(dataRes);
         if (success) {
           const { status: jobStatus, output: jobOutput } = job;
           setStatus(jobStatus);
@@ -95,8 +97,8 @@ function App() {
     } catch ({ response }) {
       console.log(response);
       if (response) {
-        console.log(`Got Axios error : ${response.data.output.stderr}`);
-        setErrorOutput(response.data.output.stderr);
+        console.log(`Got Axios error `);
+        setErrorOutput("error");
         setCodeOutput("");
       } else {
         console.log("Error connecting to server!");

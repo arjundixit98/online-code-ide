@@ -43,7 +43,6 @@ function Editor({
     const payload = {
       language,
       code,
-      problemId,
     };
     try {
       setCodeOutput("");
@@ -68,7 +67,7 @@ function Editor({
             startedAt,
             completedAt,
           } = job;
-          //console.log(jobStatus, jobOutput);
+          console.log(jobStatus, jobOutput);
           if (jobStatus === "pending") return;
           else if (jobStatus === "error") {
             setErrorOutput(jobOutput);
@@ -86,8 +85,8 @@ function Editor({
     } catch ({ response }) {
       console.log(response);
       if (response) {
-        console.log(`Got Axios error : ${response.data.output.stderr}`);
-        setErrorOutput(response.data.output.stderr);
+        console.log(`Got Axios error : `);
+        setErrorOutput("");
         setCodeOutput("");
       } else {
         console.log("Error connecting to server!");

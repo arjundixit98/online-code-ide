@@ -5,6 +5,8 @@ import ViewProblems from "./ViewProblems";
 import LoadProblem from "./LoadProblem";
 import "./stylesheets/home.css";
 import DefaultEditor from "./DefaultEditor";
+import SignUp from "./Signup";
+import Login from "./Login";
 
 function Home() {
   return (
@@ -22,7 +24,9 @@ function Home() {
       </div>
 
       <Routes>
-        <Route path="/" element={<DefaultEditor />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/editor" element={<DefaultEditor />} />
         <Route path="/view-problem-set" element={<ViewProblems />} />
         <Route path="/load-problem/:id" element={<LoadProblem />} />
         <Route path="/add-problem" element={<AddProblem />} />

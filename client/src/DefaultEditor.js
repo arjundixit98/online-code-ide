@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./stylesheets/loadproblem.css";
 import Editor from "./Editor";
 import CodeOutputView from "./CodeOutputView";
+import { checkAuthStatus } from "./service/auth";
+import { useNavigate } from "react-router-dom";
 const DefaultEditor = () => {
   const [codeOutput, setCodeOutput] = useState("");
   const [errorOutput, setErrorOutput] = useState("");
 
   const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
   const [runtime, setRuntime] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!checkAuthStatus()) {
+      //redirect to login page
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <div className="load-problem-page">
