@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
       );
       setIsLoggedIn(false); // Update local state to reflect logout
     } catch (error) {
-      setIsLoggedIn(false);
       throw error;
       // You might want to handle logout errors differently, like showing a message
     }
