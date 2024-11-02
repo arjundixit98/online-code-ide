@@ -18,7 +18,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Replace with your frontend's origin
+    origin: process.env.REACT_FRONTEND_URL, // Replace with your frontend's origin
     credentials: true,
   })
 );
