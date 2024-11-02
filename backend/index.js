@@ -147,7 +147,11 @@ app.post("/login", async (req, res) => {
     }
     const token = generateToken(findUser);
     console.log(token);
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      // prevents client-side JavaScript access to cookies
+      // secure: true, // ensures cookie is sent only over HTTPS
+      // sameSite: "None", // allows cross-site cookies, required for some CORS setups
+    });
 
     return res.status(201).json({
       status: "success",

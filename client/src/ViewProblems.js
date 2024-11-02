@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { checkAuthStatus } from "./service/auth";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./stylesheets/viewproblems.css";
 
 function ViewProblems() {
   const [problemList, setProblemList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,14 +21,8 @@ function ViewProblems() {
       }
     };
 
-    //check whether cookie has the JWT token or not
-    // if it doesn't redirect back to login page
-    //if it does fetch the data
-    if (!checkAuthStatus()) {
-      //redirect to login page
-      navigate("/");
-    } else fetchData();
-  }, [navigate]);
+    fetchData();
+  });
 
   if (loading) {
     return <div className="loading">Loading...</div>;

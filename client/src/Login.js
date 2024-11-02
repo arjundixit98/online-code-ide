@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { AuthContext } from "./AuthContext";
 
 function Login() {
@@ -13,25 +12,9 @@ function Login() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  //Check if the user is already logged in
-  // const checkIfLoggedIn = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:8000/auth/verify", {
-  //       withCredentials: true,
-  //     });
-  //     if (response.data.status === "success") {
-  //       console.log("User authenticated", response.data.username);
-  //       navigate("/editor");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error occured", error.response?.data?.message);
-  //   }
-  // };
-  // useEffect(() => checkIfLoggedIn, [navigate]);
-
   useEffect(() => {
     if (isLoggedIn) navigate("/editor");
-  });
+  }, [isLoggedIn, navigate]);
 
   const onLoginClicked = async (e) => {
     e.preventDefault();
@@ -41,17 +24,13 @@ function Login() {
     };
 
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/login`,
-        payload,
-        { withCredentials: true }
-      );
+      const response = await login(payload);
       const { message, status } = response.data;
       setStatus(status);
       setMessage(message);
-      login();
       navigate("/editor");
     } catch (error) {
+      console.log(error);
       if (error.response) {
         console.error("Error received while logging in", error);
 
