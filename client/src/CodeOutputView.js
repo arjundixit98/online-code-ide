@@ -6,10 +6,15 @@ const CodeOutputView = ({
   runtime,
   errorOutput: errorString,
   submitButtonClicked,
+  timeoutError,
 }) => {
   let errorOutput = "";
   if (errorString) {
-    errorOutput = JSON.parse(errorString).stderr;
+    try {
+      errorOutput = JSON.parse(errorString).stderr;
+    } catch (err) {
+      errorOutput = errorString;
+    }
   }
 
   return (
@@ -21,6 +26,10 @@ const CodeOutputView = ({
       ) : errorOutput ? (
         <div className="exec-time">
           <div>Compilation Error...</div>
+        </div>
+      ) : timeoutError ? (
+        <div className="exec-time">
+          <div>Server Timeout Error...</div>
         </div>
       ) : submitButtonClicked ? (
         <div className="exec-time">
@@ -41,6 +50,13 @@ const CodeOutputView = ({
         <>
           <p className="error1">Error</p>
           <div className="output1">{errorOutput}</div>
+        </>
+      )}
+
+      {timeoutError && (
+        <>
+          <p className="error1">Timeout error</p>
+          <div className="output1">{timeoutError}</div>
         </>
       )}
     </div>

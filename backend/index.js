@@ -3,24 +3,18 @@ const express = require("express");
 const cors = require("cors");
 const PORT = process.env.PORT;
 const app = express();
-const mongoose = require("mongoose");
-const MONGOURI = process.env.MONGO_DB_URL;
+// const MONGOURI = process.env.MONGO_DB_URL;
+// const mongoose = require("mongoose");
+const { connectDB } = require("./db");
 const { generateFile } = require("./generateFile");
-const { addJobToQueue } = require("./jobQueue");
+const { addJobToQueue } = require("./queue");
 const Job = require("./models/job");
 const User = require("./models/user");
 const problemRoute = require("./routes/problem");
 const cookieParser = require("cookie-parser");
 const { generateToken, verifyToken } = require("./service/auth");
 
-mongoose
-  .connect(MONGOURI)
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error", err);
-  });
+connectDB();
 
 app.use(
   cors({

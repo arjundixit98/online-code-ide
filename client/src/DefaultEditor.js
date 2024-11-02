@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const DefaultEditor = () => {
   const [codeOutput, setCodeOutput] = useState("");
   const [errorOutput, setErrorOutput] = useState("");
+  const [timeoutError, setTimeoutError] = useState("");
 
   const [submitButtonClicked, setSubmitButtonClicked] = useState(false);
   const [runtime, setRuntime] = useState("");
@@ -29,6 +30,7 @@ const DefaultEditor = () => {
             setRuntime={setRuntime}
             setErrorOutput={setErrorOutput}
             setSubmitButtonClicked={setSubmitButtonClicked}
+            setTimeoutError={setTimeoutError}
             height={"350px"}
           />
           {submitButtonClicked ? (
@@ -37,6 +39,7 @@ const DefaultEditor = () => {
               runtime={runtime}
               errorOutput={errorOutput}
               submitButtonClicked={submitButtonClicked}
+              timeoutError={timeoutError}
             />
           ) : (
             <></>

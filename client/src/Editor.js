@@ -16,9 +16,11 @@ function Editor({
   setSubmitButtonClicked,
   height,
   width,
+  setTimeoutError,
 }) {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("cpp");
+  let intervalId;
   useEffect(() => {
     const defaultLang = localStorage.getItem("default-language") || "cpp";
     setLanguage(defaultLang);
@@ -39,7 +41,44 @@ function Editor({
     return `${executionTime}`;
   };
 
+  const fetchData = async (jobId) => {
+    const { data: dataRes } = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/status`,
+      { params: { id: jobId } }
+    );
+
+    const { job, success, error } = dataRes;
+
+    if (success) {
+      const {
+        status: jobStatus,
+        output: jobOutput,
+        startedAt,
+        completedAt,
+      } = job;
+      console.log(jobStatus, jobOutput);
+      if (jobStatus === "pending") return;
+      else if (jobStatus === "error") {
+        setErrorOutput(jobOutput);
+        setTimeoutError("");
+      } else {
+        setCodeOutput(jobOutput);
+        setRuntime(renderTimeDetails(startedAt, completedAt));
+        setTimeoutError("");
+      }
+      clearInterval(intervalId);
+    } else {
+      console.log(error);
+      setErrorOutput(error);
+      setTimeoutError("");
+      clearInterval(intervalId);
+    }
+  };
+
   const handleSubmit = async () => {
+    const startTime = Date.now();
+    const TIMEOUT_LIMIT = 10000;
+
     const payload = {
       language,
       code,
@@ -52,36 +91,24 @@ function Editor({
         data: { jobId },
       } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/run`, payload);
 
-      let intervalId;
-      intervalId = setInterval(async () => {
-        const { data: dataRes } = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/status`,
-          { params: { id: jobId } }
-        );
-
-        const { job, success, error } = dataRes;
-        if (success) {
-          const {
-            status: jobStatus,
-            output: jobOutput,
-            startedAt,
-            completedAt,
-          } = job;
-          console.log(jobStatus, jobOutput);
-          if (jobStatus === "pending") return;
-          else if (jobStatus === "error") {
-            setErrorOutput(jobOutput);
-          } else {
-            setCodeOutput(jobOutput);
-            setRuntime(renderTimeDetails(startedAt, completedAt));
-          }
-          clearInterval(intervalId);
+      intervalId = setInterval(() => {
+        // Check if timeout limit is reached
+        if (Date.now() - startTime > TIMEOUT_LIMIT) {
+          console.log("Request timed out. Please try again later.");
+          setTimeoutError("Request timed out. Please try again later.");
+          setErrorOutput("");
+          setCodeOutput("");
+          clearInterval(intervalId); // Stop polling
         } else {
-          console.log(error);
-          setErrorOutput(error);
-          clearInterval(intervalId);
+          fetchData(jobId);
         }
       }, 1000);
+
+      // let intervalId;
+      // intervalId = setInterval(async () => {
+
+      //   fetchData();
+      // }, 1000);
     } catch ({ response }) {
       console.log(response);
       if (response) {
