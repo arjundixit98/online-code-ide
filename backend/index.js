@@ -150,6 +150,7 @@ app.post("/login", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Use secure if your site uses HTTPS
+      sameSite: "None",
     });
 
     return res.status(201).json({
