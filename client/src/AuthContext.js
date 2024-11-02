@@ -6,9 +6,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkIfLoggedIn = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/auth/verify", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/auth/verify`,
+          {
+            withCredentials: true,
+          }
+        );
         if (response.data.status === "success") {
           // console.log("User authenticated", response.data.username);
           setIsLoggedIn(true);

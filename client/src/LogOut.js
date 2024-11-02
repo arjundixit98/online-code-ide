@@ -10,7 +10,9 @@ function LogOut() {
   useEffect(() => {
     const logout = async () => {
       try {
-        const response = await axios.post("http://localhost:8000/logout");
+        const response = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/logout`
+        );
         if (response.data.status === "success") {
           document.cookie =
             "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";

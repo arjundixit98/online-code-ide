@@ -18,7 +18,7 @@ function Signup() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/register",
+        `${process.env.REACT_APP_BACKEND_URL}/register`,
         payload
       );
       console.log(response.data);
