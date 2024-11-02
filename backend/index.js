@@ -148,7 +148,6 @@ app.post("/login", async (req, res) => {
     const token = generateToken(findUser);
     console.log(token);
     res.cookie("token", token, {
-      httpOnly: true,
       secure: true, // Use secure if your site uses HTTPS
       sameSite: "None",
     });
