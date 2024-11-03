@@ -82,6 +82,7 @@ function Editor({
     const payload = {
       language,
       code,
+      problemId,
     };
     try {
       setCodeOutput("");
