@@ -11,6 +11,8 @@ const LoadProblem = () => {
   const { id: problemId } = useParams();
   const [codeOutput, setCodeOutput] = useState("");
   const [errorOutput, setErrorOutput] = useState("");
+  const [timeoutError, setTimeoutError] = useState("");
+
   if ((codeOutput || errorOutput) && containerRef.current) {
     const container = containerRef.current;
     setTimeout(() => {
@@ -70,6 +72,7 @@ const LoadProblem = () => {
             setRuntime={setRuntime}
             setErrorOutput={setErrorOutput}
             setSubmitButtonClicked={setSubmitButtonClicked}
+            setTimeoutError={setTimeoutError}
             height={"280px"}
             width={"670px"}
           />
@@ -80,6 +83,7 @@ const LoadProblem = () => {
               runtime={runtime}
               errorOutput={errorOutput}
               submitButtonClicked={submitButtonClicked}
+              timeoutError={timeoutError}
             />
           )}
         </div>
