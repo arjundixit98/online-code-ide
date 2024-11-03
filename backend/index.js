@@ -167,7 +167,11 @@ app.post("/login", async (req, res) => {
 
 app.post("/logout", async (req, res) => {
   try {
-    res.cookie("token", "", { expires: new Date(0) });
+    res.cookie("token", "", {
+      expires: new Date(0),
+      secure: true, // Use secure if your site uses HTTPS
+      sameSite: "None",
+    });
     // console.log(res.cookie?.token);
     return res
       .status(200)
