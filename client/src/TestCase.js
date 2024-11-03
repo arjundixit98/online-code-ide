@@ -7,6 +7,7 @@ const TestCase = ({
   runtime,
   errorOutput: errorString,
   submitButtonClicked,
+  timeoutError,
 }) => {
   const {
     testCaseInputString: input,
@@ -16,9 +17,12 @@ const TestCase = ({
 
   let errorOutput = "";
   if (errorString) {
-    errorOutput = JSON.parse(errorString).stderr;
+    try {
+      errorOutput = JSON.parse(errorString).stderr;
+    } catch (err) {
+      errorOutput = errorString;
+    }
   }
-
   const isCorrect = (v1, v2, n) => {
     v1 = v1.split("\n");
     v2 = v2.split("\n");
@@ -46,6 +50,10 @@ const TestCase = ({
         <div className="tr-status">
           <div>Compilation Error...</div>
         </div>
+      ) : timeoutError ? (
+        <div className="tr-status">
+          <div>Server Timeout Error...</div>
+        </div>
       ) : submitButtonClicked ? (
         <div className="tr-status">
           <div>Submission Queued...</div>
@@ -69,6 +77,13 @@ const TestCase = ({
         <>
           <p className="error">Error</p>
           <div className="error-output">{errorOutput}</div>
+        </>
+      )}
+
+      {timeoutError && (
+        <>
+          <p className="error">Timeout error</p>
+          <div className="error-output">{timeoutError}</div>
         </>
       )}
     </div>
