@@ -147,7 +147,10 @@ app.post("/login", async (req, res) => {
     }
     const token = generateToken(findUser);
     console.log(token);
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      secure: true, // Use secure if your site uses HTTPS
+      sameSite: "None",
+    });
 
     return res.status(201).json({
       status: "success",

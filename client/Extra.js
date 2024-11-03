@@ -1,3 +1,19 @@
+//Check if the user is already logged in
+// const checkIfLoggedIn = async () => {
+//   try {
+//     const response = await axios.get("http://localhost:8000/auth/verify", {
+//       withCredentials: true,
+//     });
+//     if (response.data.status === "success") {
+//       console.log("User authenticated", response.data.username);
+//       navigate("/editor");
+//     }
+//   } catch (error) {
+//     console.error("Error occured", error.response?.data?.message);
+//   }
+// };
+// useEffect(() => checkIfLoggedIn, [navigate]);
+
 import "./Signup.css";
 import React, { useState } from "react";
 import axios from "axios";

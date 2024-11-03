@@ -62,14 +62,14 @@ function App() {
 
       const {
         data: { jobId },
-      } = await axios.post("http://localhost:8000/run", payload);
+      } = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/run`, payload);
       console.log(payload);
       setJobID(jobId);
 
       let intervalId;
       intervalId = setInterval(async () => {
         const { data: dataRes } = await axios.get(
-          "http://localhost:8000/status",
+          `${process.env.REACT_APP_BACKEND_URL}/status`,
           { params: { id: jobId } }
         );
 

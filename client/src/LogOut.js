@@ -1,28 +1,22 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 
 function LogOut() {
-  const { logoutt } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
   useEffect(() => {
-    const logout = async () => {
+    const logMeOut = async () => {
       try {
-        const response = await axios.post("http://localhost:8000/logout");
-        if (response.data.status === "success") {
-          document.cookie =
-            "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-          console.log("Logged out sucessfully");
-          logoutt();
-          navigate("/");
-        }
+        await logout();
+        navigate("/");
       } catch (error) {
-        console.error("Error occured", error.response?.data?.message);
+        console.error("Logout failed:", error);
       }
     };
-    logout();
+    logMeOut();
   });
 }
 
